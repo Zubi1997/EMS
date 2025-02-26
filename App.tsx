@@ -88,7 +88,7 @@ function App(): React.JSX.Element {
             paddingHorizontal: safePadding,
             paddingBottom: safePadding,
           }}>
-          <Text>EMS first commit haiii</Text>
+          <Text>EMS first commit ha</Text>
         </View>
       </ScrollView>
     </View>
