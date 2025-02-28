@@ -7,16 +7,14 @@ import Icon from 'react-native-vector-icons/Ionicons';
 // Import Screens
 import HomeScreen from '../screens/HomeScreen';
 import CustomDrawerContent from './CustomDrawerContent';
-import AllSalesScreen from '../screens/AllSalesScreen';
-import Profile from '../screens/Profile';
-import SaleDetail from '../screens/SaleDetail';
-import AddSale from '../screens/AddSale';
-import EditSale from '../screens/EditSale';
+import ScreenWrapper from '../components/ScreenWrapper/ScreenWrapper';
+
 
 const Drawer = createDrawerNavigator();
 
 const DrawerNavigator = () => {
   return (
+    <ScreenWrapper>
     <Drawer.Navigator
       drawerContent={props => <CustomDrawerContent {...props} />}
       screenOptions={{headerShown: false}}>
@@ -36,12 +34,13 @@ const DrawerNavigator = () => {
         //   ),
         // })}
       />
-      <Drawer.Screen name="AllSales" component={AllSalesScreen} />
+      {/* <Drawer.Screen name="AllSales" component={AllSalesScreen} /> */}
       {/* <Drawer.Screen name="Profile" component={Profile} />
       <Drawer.Screen name="SaleDetail" component={SaleDetail} />
       <Drawer.Screen name="AddSale" component={AddSale} />
       <Drawer.Screen name="EditSale" component={EditSale} /> */}
     </Drawer.Navigator>
+    </ScreenWrapper>
   );
 };
 

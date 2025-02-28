@@ -1,7 +1,7 @@
 const colors = {
-    primary: '#1bab6e',    
-    lightPrimary:'#daf1e7',  
-    mediumPrimary:'#73dd3c',
+    primary: '#6c6095',    
+    lightPrimary:'#B5AFCA',  
+    mediumPrimary:'#897FAA',
     background: '#F5F5F5',       // Screen background color
     text: '#333333',             // Primary text color
     white: '#FFFFFF',        // Light text color

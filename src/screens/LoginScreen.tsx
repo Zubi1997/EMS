@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, Button, StyleSheet, ScrollView, Alert} from 'react-native';
+import {View, Text, Button, StyleSheet, ScrollView, Alert, TouchableOpacity} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import CustomTextInput from '../components/TextInput/TextInputCustom';
 import colors from '../utils/colors';
@@ -15,12 +15,13 @@ import CustomButton from '../components/Button/CustomButton';
 import {ApiResponse, User} from '../constants/types';
 import {API} from '../utils/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import PasswordTextInputCustom from '../components/TextInput/PasswordTextInputCustom';
 
 type Props = NativeStackScreenProps<any, 'Login'>;
 
 const LoginScreen: React.FC<Props> = ({navigation}) => {
-  const [username, setUsername] = useState<string>('3294417346');
-  const [password, setPassword] = useState<string>('aaaaaaaa');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [data, setData] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -31,9 +32,12 @@ const LoginScreen: React.FC<Props> = ({navigation}) => {
       let response = res?.data;
       console.log({userdetailsssss: response});
       if (response?.status) {
-        await AsyncStorage.setItem('userData', JSON.stringify(response?.data?.user));
+        await AsyncStorage.setItem(
+          'userData',
+          JSON.stringify(response?.data?.user),
+        );
         setLoading(false);
-          navigation.reset({
+        navigation.reset({
           index: 0,
           routes: [{name: 'Drawer'}],
         });
@@ -48,8 +52,8 @@ const LoginScreen: React.FC<Props> = ({navigation}) => {
   };
   const loginApi = async () => {
     try {
-      if (!username) {
-        Alert.alert('Phone number is required');
+      if (!email) {
+        Alert.alert('Email is required');
         return;
       } else if (!password) {
         Alert.alert('Password is required');
@@ -58,9 +62,12 @@ const LoginScreen: React.FC<Props> = ({navigation}) => {
 
       setLoading(true);
       let body = {
-        phone: username,
+        phone: email,
         password: password,
       };
+        navigation.navigate('Drawer');
+
+      return
       const response = await API.login(body);
       console.log('login api response////', response?.data);
       if (response?.data?.status) {
@@ -89,28 +96,32 @@ const LoginScreen: React.FC<Props> = ({navigation}) => {
         contentContainerStyle={styles.scrollView}>
         <View style={styles.container}>
           {/* <Header title="Home" /> */}
-          <ImageComponent height={200} width={200} source={images.logo} />
-          <CustomText
-            style={styles.welcomeText}
-            text={Locale.WelcomeToRevival}
-          />
-          <CustomText style={styles.signinDesc} text={Locale.Please_sign_in} />
+          <ImageComponent height={200} width={200} source={images.EMSlogo} />
           <View style={styles.form}>
             <CustomTextInput
-              label="Phone"
-              value={username}
-              onChangeText={setUsername}
-              placeholder={Locale.EnterPhone}
+              label={Locale.Email}
+              value={email}
+              onChangeText={setEmail}
+              keyboardType={'email-address'}
+              placeholder={Locale.Enter_email}
             />
-            <CustomTextInput
-              label="Password"
+            <PasswordTextInputCustom
+              label={Locale.Password}
               value={password}
               onChangeText={setPassword}
+              keyboardType={'default'}
               placeholder={Locale.EnterPassword}
             />
-            <CustomCheckbox label={Locale.RememberMe} />
+            <View style={styles.remeberMeStyle}>
+              <TouchableOpacity onPress={()=>console.log("login button press")}>
+            <CustomText text={Locale.Dont_have_account} style={styles.donthaveaccountTextStyle} />
+              </TouchableOpacity>
+              <CustomCheckbox label={Locale.Remember_me} />
+              
+            </View>
+
             <CustomButton
-              title="Login"
+              title={Locale.Login}
               onPress={() => loginApi()}
               style={{marginTop: 30}}
               loading={loading}
@@ -137,14 +148,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '500',
   },
-  signinDesc: {
-    color: colors.darkGray,
+  donthaveaccountTextStyle: {
+    color: colors.primary,
     fontSize: 14,
     marginTop: 5,
   },
   form: {
     marginTop: 20,
   },
+  remeberMeStyle: {flexDirection: 'row', gap: 4, alignItems: 'center',justifyContent:"space-between"},
 });
 
 export default LoginScreen;

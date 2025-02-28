@@ -1,18 +1,27 @@
-import React, {useLayoutEffect} from 'react';
-import {SafeAreaView, StyleSheet, Text, View, StatusBar} from 'react-native';
+import React, {useEffect, useLayoutEffect} from 'react';
+import {SafeAreaView, StyleSheet, Text, View, StatusBar, Linking} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import DrawerNavigator from './DrawerNavigator';
 import LoginScreen from '../screens/LoginScreen';
-import Profile from '../screens/Profile';
-import SaleDetail from '../screens/SaleDetail';
-import AddSale from '../screens/AddSale';
-import EditSale from '../screens/EditSale';
 import SplashScreenComponent from '../screens/SplashScreen';
+import linking from '../utils/linking';
 
 const Stack = createNativeStackNavigator();
 
 const MainNavigator = () => {
+
+  useEffect(() => {
+    const handleDeepLink = async () => {
+      const url = await Linking.getInitialURL();
+      if (url) {
+        console.log('Deep link opened:', url);
+      }
+    };
+
+    handleDeepLink();
+  }, []);
+
   // const insets = useSafeAreaInsets();
 
   useLayoutEffect(() => {
@@ -22,7 +31,7 @@ const MainNavigator = () => {
   }, []);
 
   return (
-    <NavigationContainer>
+    <NavigationContainer linking={linking}>
       <Stack.Navigator
         initialRouteName="SplashScreen"
         screenOptions={{headerShown: false}}>
@@ -34,10 +43,6 @@ const MainNavigator = () => {
           component={DrawerNavigator}
           //   options={{headerShown: false}}
         />
-        <Stack.Screen name="Profile" component={Profile} />
-        <Stack.Screen name="SaleDetail" component={SaleDetail} />
-        <Stack.Screen name="AddSale" component={AddSale} />
-        <Stack.Screen name="EditSale" component={EditSale} />
       </Stack.Navigator>
     </NavigationContainer>
   );

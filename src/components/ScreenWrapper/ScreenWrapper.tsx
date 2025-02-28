@@ -10,8 +10,8 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import colors from '../../utils/colors';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type ScreenWrapperProps = {
   children: React.ReactNode;

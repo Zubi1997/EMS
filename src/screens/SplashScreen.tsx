@@ -1,65 +1,98 @@
-import {Image, Linking, Platform, StyleSheet} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {useTheme} from '@react-navigation/native';
-// import SplashScreen from 'react-native-splash-screen';
-import images from '../assets/mageAssets';
-import colors from '../utils/colors';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useEffect, useRef, useState } from "react";
+import { View, Text, StyleSheet, Animated, Vibration } from "react-native";
+import SplashScreen from "react-native-splash-screen";
+import ImageComponent from "../components/Image/CustomImage";
+import images from "../assets/mageAssets";
 
-const SplashScreenComponent = ({navigation}) => {
-  const [killStateActive, setKillStateActive] = useState('');
-  const [notification, setNotification] = useState({});
-  const [isReady, setIsReady] = useState(false);
+// Random Gym Quotes Array
+const gymQuotes = [
+  "Push Yourself Beyond Limits!",
+  "Train Hard, Stay Strong!",
+  "The Pain You Feel Today, Is The Strength You Gain Tomorrow!",
+  "Leg Day? No Excuses!",
+  "No Pain, No Gain!",
+];
+
+const AppSplashScreen = ({ navigation }: any) => {
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const scaleAnim = useRef(new Animated.Value(0.8)).current;
+  const [quote, setQuote] = useState("");
 
   useEffect(() => {
-    const getIntialRoute = async () => {
-      // let data = await AsyncStorage.getItem('user');
-      // let userData = await JSON.parse(data);
-      console.log('splash runing');
+    SplashScreen.hide();
 
-      setTimeout(async() => {
-        // if (userData) {
-        // SplashScreen.hide();
-        // navigation.navigate('Login'); 
-        const data = await AsyncStorage.getItem('token');
-        const authToken = JSON.parse(data);
-        if(authToken){
-          navigation.reset({
-            index: 0,
-            routes: [{name: 'Drawer', params: {}}],
-          });
-        }
-        else{
+    // Pick a random gym quote
+    setQuote(gymQuotes[Math.floor(Math.random() * gymQuotes.length)]);
 
-        navigation.reset({
-          index: 0,
-          routes: [{name: 'Login', params: {}}],
-        });
-      }
+    // Run animations in parallel
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 2000,
+        useNativeDriver: true,
+      }),
+      Animated.spring(scaleAnim, {
+        toValue: 1,
+        friction: 2,
+        tension: 50,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      // Vibrate slightly when animation completes (Gym feel!)
+      Vibration.vibrate(100);
+    });
 
-        // }
-      }, 1000);
-    };
-    getIntialRoute();
-  }, [navigation]);
+    // Play Dumbbell Drop Sound
+    // const gymSound = new Sound(require("../../assets/sounds/dumbbell.mp3"), Sound.MAIN_BUNDLE, (error) => {
+    //   if (!error) gymSound.play();
+    // });
+
+    // Navigate to Login Screen after Splash
+    setTimeout(() => {
+      // gymSound.release();
+      navigation.replace("Login");
+    }, 3500);
+  }, []);
+
   return (
-    <SafeAreaView style={[styles.container, {backgroundColor: colors.white}]}>
-      {/* <Image resizeMode="contain" source={images.logo} style={styles.image} /> */}
-    </SafeAreaView>
+    <View style={styles.container}>
+      {/* Animated Gym Logo */}
+      <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+      <ImageComponent height={200} width={200} source={images.EMSlogo} />
+
+        
+      </Animated.View>
+
+      {/* <Animated.Text style={[styles.quote, { opacity: fadeAnim, color: "#fff" }]}>
+        {quote}
+      </Animated.Text> */}
+    </View>
   );
 };
 
-export default SplashScreenComponent;
-
 const styles = StyleSheet.create({
   container: {
+    backgroundColor:'#fff',
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
-  image: {
-    height: 160,
-    width: 160,
+  lottie: {
+    width: 220,
+    height: 220,
+  },
+ 
+  quote: {
+    marginTop: 20,
+    fontSize: 22,
+    fontWeight: "bold",
+    fontStyle: "italic",
+    textShadowColor: "#FFD700",
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 10,
+    textTransform: "uppercase",
+    letterSpacing: 1.5,
   },
 });
+
+export default AppSplashScreen;

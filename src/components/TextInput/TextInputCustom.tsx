@@ -55,6 +55,7 @@ type CustomTextInputProps = TextInputProps & {
   containerStyle?: ViewStyle;
   inputStyle?: ViewStyle;
   placeholder?: string;
+  keyboardType?: string;
 };
 
 const CustomTextInput: React.FC<CustomTextInputProps> = ({
@@ -62,6 +63,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
   containerStyle,
   inputStyle,
   placeholder,
+  keyboardType,
   ...props
 }) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -80,6 +82,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
           isFocused ? styles.inputFocused : styles.inputUnfocused,
           {...inputStyle},
         ]}
+        keyboardType={keyboardType}
         placeholder={placeholder}
         placeholderTextColor={colors.placeholder}
         onFocus={() => setIsFocused(true)}
