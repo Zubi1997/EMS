@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import { View, Text, StyleSheet, Animated, Vibration } from "react-native";
+import { View, Text, StyleSheet, Animated, Vibration, Button } from "react-native";
 import SplashScreen from "react-native-splash-screen";
 import ImageComponent from "../components/Image/CustomImage";
 import images from "../assets/mageAssets";
+import { useTheme } from "../theme/ThemeContext";
 
 // Random Gym Quotes Array
 const gymQuotes = [
@@ -17,6 +18,7 @@ const AppSplashScreen = ({ navigation }: any) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(0.8)).current;
   const [quote, setQuote] = useState("");
+  const { theme, toggleTheme  } = useTheme()
 
   useEffect(() => {
     SplashScreen.hide();
@@ -55,14 +57,11 @@ const AppSplashScreen = ({ navigation }: any) => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container,{ backgroundColor:theme?.colors?.background}]}>
       {/* Animated Gym Logo */}
       <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
       <ImageComponent height={200} width={200} source={images.EMSlogo} />
-
-        
       </Animated.View>
-
       {/* <Animated.Text style={[styles.quote, { opacity: fadeAnim, color: "#fff" }]}>
         {quote}
       </Animated.Text> */}
@@ -72,7 +71,7 @@ const AppSplashScreen = ({ navigation }: any) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor:'#fff',
+   
     flex: 1,
     justifyContent: "center",
     alignItems: "center",

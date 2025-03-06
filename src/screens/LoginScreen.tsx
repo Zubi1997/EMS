@@ -16,6 +16,8 @@ import {ApiResponse, User} from '../constants/types';
 import {API} from '../utils/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import PasswordTextInputCustom from '../components/TextInput/PasswordTextInputCustom';
+import { useTheme } from '../theme/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 type Props = NativeStackScreenProps<any, 'Login'>;
 
@@ -25,6 +27,8 @@ const LoginScreen: React.FC<Props> = ({navigation}) => {
   const [data, setData] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const { theme,isRTL }= useTheme()
+  const { t } = useTranslation();
 
   const getUserDetail = async (userid: string) => {
     try {
@@ -90,38 +94,40 @@ const LoginScreen: React.FC<Props> = ({navigation}) => {
   };
 
   return (
-    <ScreenWrapper>
+    <ScreenWrapper backgroundColor={theme?.colors?.background}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollView}>
-        <View style={styles.container}>
+        <View style={[styles.container,{backgroundColor:theme?.colors?.background}]}>
           {/* <Header title="Home" /> */}
           <ImageComponent height={200} width={200} source={images.EMSlogo} />
           <View style={styles.form}>
             <CustomTextInput
-              label={Locale.Email}
+              label={t(Locale.Email)}
               value={email}
               onChangeText={setEmail}
               keyboardType={'email-address'}
-              placeholder={Locale.Enter_email}
+              placeholder={t(Locale.Enter_email)}
+              isRTL={isRTL}
             />
             <PasswordTextInputCustom
-              label={Locale.Password}
+              label={t(Locale.Password)}
               value={password}
               onChangeText={setPassword}
               keyboardType={'default'}
-              placeholder={Locale.EnterPassword}
+              placeholder={t(Locale.EnterPassword)}
+              isRTL={isRTL}
             />
-            <View style={styles.remeberMeStyle}>
+            <View style={[styles.remeberMeStyle,{flexDirection: isRTL?'row-reverse': 'row',}]}>
               <TouchableOpacity onPress={()=>console.log("login button press")}>
-            <CustomText text={Locale.Dont_have_account} style={styles.donthaveaccountTextStyle} />
+            <CustomText text={t(Locale.Dont_have_account)} style={[styles.donthaveaccountTextStyle]} />
               </TouchableOpacity>
-              <CustomCheckbox label={Locale.Remember_me} />
+              <CustomCheckbox label={t(Locale.Remember_me)} isRTL={isRTL}/>
               
             </View>
 
             <CustomButton
-              title={Locale.Login}
+              title={t(Locale.Login)}
               onPress={() => loginApi()}
               style={{marginTop: 30}}
               loading={loading}
@@ -136,7 +142,6 @@ const LoginScreen: React.FC<Props> = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
     paddingHorizontal: 10,
   },
   scrollView: {
@@ -149,14 +154,13 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   donthaveaccountTextStyle: {
-    color: colors.primary,
     fontSize: 14,
     marginTop: 5,
   },
   form: {
     marginTop: 20,
   },
-  remeberMeStyle: {flexDirection: 'row', gap: 4, alignItems: 'center',justifyContent:"space-between"},
+  remeberMeStyle: { gap: 4, alignItems: 'center',justifyContent:"space-between"},
 });
 
 export default LoginScreen;

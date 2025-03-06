@@ -1,11 +1,11 @@
 export default {
   WelcomeToEMS: 'Welcome to EMS!',
-  Remember_me: 'Remember me',
-  EnterPassword: 'Enter Password',
+  Remember_me: 'Remember_me',
+  EnterPassword: 'EnterPassword',
   Login: 'Login',
   Sign_up: 'Sign up',
   Forgot_password: 'Forgot password?',
-  Enter_email: 'Enter email',
+  Enter_email: 'Enter_email',
   Send_reset_link: 'Send reset link',
   Reset_password: 'Reset Password',
   Back_to_login: 'Back to Login',
@@ -18,7 +18,7 @@ export default {
   Sign_up_now: 'Sign up now',
   Already_have_account: 'Already have an account?',
   Sign_in: 'Sign in', 
-  Dont_have_account: "Don't have an account? Want to register?",
+  Dont_have_account: "Dont_have_account",
   Sign_out: "Sign out",
   Change_Theme: "Change Theme",
 

@@ -1,0 +1,25 @@
+{
+    "WelcomeToEMS": "مرحبًا بك في EMS!",
+    "Remember_me": "تذكرني",
+    "EnterPassword": "أدخل كلمة المرور",
+    "Login": "تسجيل الدخول",
+    "Sign_up": "إنشاء حساب",
+    "Forgot_password": "هل نسيت كلمة المرور؟",
+    "Enter_email": "أدخل البريد الإلكتروني",
+    "Send_reset_link": "إرسال رابط إعادة التعيين",
+    "Reset_password": "إعادة تعيين كلمة المرور",
+    "Back_to_login": "العودة إلى تسجيل الدخول",
+    "Create_account": "إنشاء حساب",
+    "First_name": "الاسم الأول",
+    "Last_name": "الاسم الأخير",
+    "Email": "البريد الإلكتروني",
+    "Password": "كلمة المرور",
+    "Confirm_password": "تأكيد كلمة المرور",
+    "Sign_up_now": "سجل الآن",
+    "Already_have_account": "هل لديك حساب بالفعل؟",
+    "Sign_in": "تسجيل الدخول",
+    "Dont_have_account": "ليس لديك حساب؟ هل تريد التسجيل؟",
+    "Sign_out": "تسجيل الخروج",
+    "Change_Theme": "تغيير السمة"
+  }
+  

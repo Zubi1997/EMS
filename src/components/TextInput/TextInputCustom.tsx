@@ -49,6 +49,7 @@ import {
   TextInputProps,
 } from 'react-native';
 import colors from '../../utils/colors';
+import { useTheme } from '../../theme/ThemeContext';
 
 type CustomTextInputProps = TextInputProps & {
   label: string;
@@ -56,6 +57,7 @@ type CustomTextInputProps = TextInputProps & {
   inputStyle?: ViewStyle;
   placeholder?: string;
   keyboardType?: string;
+  isRTL?: boolean;
 };
 
 const CustomTextInput: React.FC<CustomTextInputProps> = ({
@@ -64,22 +66,25 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
   inputStyle,
   placeholder,
   keyboardType,
+  isRTL,
   ...props
 }) => {
   const [isFocused, setIsFocused] = useState(false);
+  const { theme ,  } = useTheme()
+  console.log({isRTL})
 
   return (
     <View style={[styles.container, containerStyle]}>
       {/* Label Positioned Above Input */}
-      <View style={styles.labelContainer}>
-        <Text style={[styles.label, isFocused && styles.focusedLabel]}>
+      <View style={[styles.labelContainer,{backgroundColor: theme?.colors.background,},isRTL ? styles.labelRTL : styles.labelLTR,]}>
+        <Text style={[styles.label, isFocused && styles.focusedLabel,{color: theme?.colors?.text}]}>
           {label}
         </Text>
       </View>
       <TextInput
         style={[
           styles.input,
-          isFocused ? styles.inputFocused : styles.inputUnfocused,
+          {borderColor: isFocused?theme?.colors.primary:theme?.colors?.borderColor ,color: theme?.colors?.text, textAlign: isRTL ? 'right' : 'left', },
           {...inputStyle},
         ]}
         keyboardType={keyboardType}
@@ -98,13 +103,13 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     position: 'relative',
     width: '100%',
+    
   },
   labelContainer: {
     position: 'absolute',
     top: -10,
-    left: 10,
     zIndex: 1, // Ensures the label is above the input
-    backgroundColor: colors.white, // Matches the background of the container
+     // Matches the background of the container
     paddingHorizontal: 5,
   },
   label: {
@@ -126,6 +131,12 @@ const styles = StyleSheet.create({
   },
   inputUnfocused: {
     borderColor: colors.lightGray,
+  },
+  labelLTR: {
+    left: 10, 
+  },
+  labelRTL: {
+    right: 10, 
   },
 });
 

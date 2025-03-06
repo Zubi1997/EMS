@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import colors from '../../utils/colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTheme } from '../../theme/ThemeContext';
 
 type ScreenWrapperProps = {
   children: React.ReactNode;
@@ -28,17 +29,15 @@ const ScreenWrapper: React.FC<ScreenWrapperProps> = ({
   style,
   loading,
 }) => {
+  const {theme} = useTheme()
   return (
     <SafeAreaView style={[styles.safeArea, {backgroundColor}, style]}>
       {loading ? (
         <View style={styles.wrapper}>
-          <ActivityIndicator size="large" color={colors.primary} />
+          <ActivityIndicator size="large" color={theme?.colors.primary} />
         </View>
       ) : (
-        <>{children}</>
-      )}
-
-      {/* <KeyboardAvoidingView
+    <KeyboardAvoidingView
         style={{flex: 1}}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20} // Adjust if needed
@@ -48,9 +47,13 @@ const ScreenWrapper: React.FC<ScreenWrapperProps> = ({
             <ActivityIndicator size="large" color={colors.primary} />
           </View>
         ) : (
-          <>{children}</>
+          <ScrollView>{children}</ScrollView>
         )}
-      </KeyboardAvoidingView> */}
+      </KeyboardAvoidingView> 
+        // <>{children}</>
+      )}
+
+     
     </SafeAreaView>
   );
 };

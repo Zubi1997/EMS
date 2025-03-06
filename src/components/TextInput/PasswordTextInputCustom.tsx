@@ -9,7 +9,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import colors from '../../utils/colors';
-import Icon from 'react-native-vector-icons/MaterialIcons'; // Import icon
+import Icon from 'react-native-vector-icons/MaterialIcons'; 
+import { useTheme } from '../../theme/ThemeContext';
 
 type PasswordTextInputCustomProps = TextInputProps & {
   label: string;
@@ -17,6 +18,7 @@ type PasswordTextInputCustomProps = TextInputProps & {
   inputStyle?: ViewStyle;
   placeholder?: string;
   keyboardType?: string;
+  isRTL?: boolean;
 };
 
 const PasswordTextInputCustom: React.FC<PasswordTextInputCustomProps> = ({
@@ -25,16 +27,18 @@ const PasswordTextInputCustom: React.FC<PasswordTextInputCustomProps> = ({
   inputStyle,
   placeholder,
   keyboardType,
+  isRTL,
   ...props
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const {theme} = useTheme();
 
   return (
     <View style={[styles.container, containerStyle]}>
       {/* Label Positioned Above Input */}
-      <View style={styles.labelContainer}>
-        <Text style={[styles.label, isFocused && styles.focusedLabel]}>
+      <View style={[styles.labelContainer,{backgroundColor: theme?.colors.background,},,isRTL ? styles.labelRTL : styles.labelLTR,]}>
+        <Text style={[styles.label, isFocused && styles.focusedLabel,{color:theme?.colors.text}]}>
           {label}
         </Text>
       </View>
@@ -43,11 +47,11 @@ const PasswordTextInputCustom: React.FC<PasswordTextInputCustomProps> = ({
       <View
         style={[
           styles.inputContainer,
-          { borderColor: isFocused ? colors.primary : colors.lightGray }, // Apply dynamic border color
+          { borderColor: isFocused ? theme?.colors.primary : theme?.colors.borderColor,  flexDirection: isRTL?'row-reverse':"row", }, // Apply dynamic border color
         ]}
       >
         <TextInput
-          style={[styles.input, inputStyle]}
+          style={[styles.input,{color: theme?.colors.text,  textAlign: isRTL ? 'right' : 'left',}]}
           keyboardType={keyboardType}
           placeholder={placeholder}
           placeholderTextColor={colors.placeholder}
@@ -65,7 +69,7 @@ const PasswordTextInputCustom: React.FC<PasswordTextInputCustomProps> = ({
           <Icon
             name={isPasswordVisible ? 'visibility' : 'visibility-off'}
             size={24}
-            color={colors.primary}
+            color={theme?.colors.primary}
           />
         </TouchableOpacity>
       </View>
@@ -81,9 +85,8 @@ const styles = StyleSheet.create({
   labelContainer: {
     position: 'absolute',
     top: -10,
-    left: 10,
     zIndex: 1,
-    backgroundColor: colors.white,
+    
     paddingHorizontal: 5,
   },
   label: {
@@ -94,7 +97,7 @@ const styles = StyleSheet.create({
     color: colors.primary,
   },
   inputContainer: {
-    flexDirection: 'row',
+  
     alignItems: 'center',
     borderWidth: 1,
     borderRadius: 5,
@@ -107,6 +110,12 @@ const styles = StyleSheet.create({
   },
   eyeIcon: {
     padding: 10,
+  },
+  labelLTR: {
+    left: 10, 
+  },
+  labelRTL: {
+    right: 10, 
   },
 });
 

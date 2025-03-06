@@ -14,6 +14,7 @@ import {Provider} from 'react-redux';
 import store from './src/store';
 import {ToastProvider} from './src/components/CustomToast/ToastContext';
 import SplashScreen from 'react-native-splash-screen';
+import { ThemeProvider } from './src/theme/ThemeContext';
 const App = () => {
   useEffect(() => {
     // setTimeout(() => {
@@ -29,7 +30,9 @@ const App = () => {
       />
       <ToastProvider>
         <Provider store={store}>
+        <ThemeProvider>
           <MainNavigator />
+          </ThemeProvider> 
         </Provider>
       </ToastProvider>
     </SafeAreaProvider>

@@ -8,16 +8,18 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import HomeScreen from '../screens/HomeScreen';
 import CustomDrawerContent from './CustomDrawerContent';
 import ScreenWrapper from '../components/ScreenWrapper/ScreenWrapper';
+import { useTheme } from '../theme/ThemeContext';
 
 
 const Drawer = createDrawerNavigator();
 
 const DrawerNavigator = () => {
+  const { isRTL } = useTheme()
   return (
-    <ScreenWrapper>
     <Drawer.Navigator
       drawerContent={props => <CustomDrawerContent {...props} />}
-      screenOptions={{headerShown: false}}>
+      screenOptions={{headerShown: false,
+      drawerPosition:isRTL?"right":"left"}}>
       <Drawer.Screen
         name="HomeScreen"
         component={HomeScreen}
@@ -40,7 +42,6 @@ const DrawerNavigator = () => {
       <Drawer.Screen name="AddSale" component={AddSale} />
       <Drawer.Screen name="EditSale" component={EditSale} /> */}
     </Drawer.Navigator>
-    </ScreenWrapper>
   );
 };
 

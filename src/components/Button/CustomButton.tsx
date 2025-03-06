@@ -7,7 +7,7 @@ import {
   View,
   ActivityIndicator,
 } from 'react-native';
-import colors from '../../utils/colors';
+import { useTheme } from '../../theme/ThemeContext';
 
 interface ButtonProps {
   title: string;
@@ -26,19 +26,20 @@ const CustomButton: React.FC<ButtonProps> = ({
   loading,
   disable = false,
 }) => {
+  const { theme } = useTheme();
   return (
     <>
       {loading ? (
-        <View style={[styles.button, style]}>
-          <ActivityIndicator size="small" color={colors.white} />
+       <View style={[styles.button, style, { backgroundColor: theme?.colors.primary }]}>
+          <ActivityIndicator size="small" color={theme?.colors.lightPrimary} />
         </View>
       ) : disable ? (
-        <View style={[styles.disableButton, style]}>
+        <View style={[styles.disableButton, style,{ backgroundColor: theme?.colors.placeholderText,}]}>
           <Text style={[styles.buttonText, textStyle]}>{title}</Text>
         </View>
       ) : (
-        <TouchableOpacity style={[styles.button, style]} onPress={onPress}>
-          <Text style={[styles.buttonText, textStyle]}>{title}</Text>
+        <TouchableOpacity style={[styles.button, style,{backgroundColor: theme?.colors.primary}]} onPress={onPress}>
+         <Text style={[styles.buttonText, textStyle, { color: theme?.colors.buttonText }]}>{title}</Text>
         </TouchableOpacity>
       )}
     </>
@@ -47,13 +48,13 @@ const CustomButton: React.FC<ButtonProps> = ({
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: colors.primary,
+    
     padding: 12,
     borderRadius: 8,
     alignItems: 'center',
   },
   disableButton: {
-    backgroundColor: colors.placeholder,
+   
     padding: 12,
     borderRadius: 8,
     alignItems: 'center',
